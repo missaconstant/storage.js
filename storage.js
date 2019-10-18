@@ -51,8 +51,8 @@ var _Storage = {
     }
     else {
         if (fail) fail();
-        console.error('Cannot initiate this database.');
-    }
+            console.error('Cannot initiate this database.');
+        }
     },
 
     /**
