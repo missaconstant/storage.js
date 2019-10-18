@@ -4,8 +4,8 @@
 */
 var _Storage = {
     /**
-    * storage object from window
-    */
+     * storage object from window
+     */
     storage: window.localStorage,
 
     db: null,
@@ -19,108 +19,108 @@ var _Storage = {
     inittial: null,
 
     /**
-    * This to initialize a database
-    * @namespace Storage
-    * @param {Object} options
-    * @param {function} callback: success callback
-    * @param {function} fail: fail callback
-    * return Storage
-    */
+     * This to initialize a database
+     * @namespace Storage
+     * @param {Object} options
+     * @param {function} callback: success callback
+     * @param {function} fail: fail callback
+     * @return Storage
+     */
     initDb: function (options, callback, fail) {
-    	if (options && options.name && !this.existsDb(options.name)) {
-    		var newDb = {
-    			dbinfos: {name: options.name},
-    			tables: options.tables ? options.tables : {}
-    		};
+    if (options && options.name && !this.existsDb(options.name)) {
+        var newDb = {
+        dbinfos: {name: options.name},
+        tables: options.tables ? options.tables : {}
+        };
 
-    		this.storage.setItem(options.name, JSON.stringify(newDb));
-    		/* select the db */
-    		this.selectDb(options.name);
+        this.storage.setItem(options.name, JSON.stringify(newDb));
+        /* select the db */
+        this.selectDb(options.name);
 
-    		if (callback) callback();
-    		console.log("Database "+options.name+"setted correctly !");
-    	}
-    	else if(this.existsDb(options.name)){
-    	    /* select the db */
+        if (callback) callback();
+        console.log("Database "+options.name+"setted correctly !");
+    }
+    else if(this.existsDb(options.name)){
+        /* select the db */
             this.selectDb(options.name);
 
-    		if (callback) callback();
-    		console.log("Database "+options.name+" inited !");
-    	}
-    	else {
-    		if (fail) fail();
-    		console.error('Cannot initiate this database.');
-    	}
+        if (callback) callback();
+        console.log("Database "+options.name+" inited !");
+    }
+    else {
+        if (fail) fail();
+        console.error('Cannot initiate this database.');
+    }
     },
 
     /**
-    * This function creates new item in localstorage called db
-    * @namespace Storage
-    * @param {String} dbname
-    * return Storage
-    */
+     * This function creates new item in localstorage called db
+     * @namespace Storage
+     * @param {String} dbname
+     * return Storage
+     */
     newDb: function (dbname) {
         this.storage.setItem(dbname, '{"dbinfos": {"name": "'+dbname+'"}, "tables": {}}');
         return this;
     },
 
     /**
-    * This function select a database
-    * @namespace Storage
-    * @param {String} dbname
-    * return Storage
-    */
+     * This function select a database
+     * @namespace Storage
+     * @param {String} dbname
+     * return Storage
+     */
     selectDb: function (dbname) {
-    	/* initialisation if needed */
-    	// this.initDb(this.inittial);
+    /* initialisation if needed */
+    // this.initDb(this.inittial);
 
-    	var founded = this.storage.getItem(dbname);
+    var founded = this.storage.getItem(dbname);
 
-    	if (founded) {
-        	this.db = JSON.parse(founded);
-        	this.selected = dbname;
-        	return this;
-    	}
-    	else {
-    		console.error("Database "+dbname+" doesn't exists !");
-    	}
+    if (founded) {
+        this.db = JSON.parse(founded);
+        this.selected = dbname;
+        return this;
+    }
+    else {
+        console.error("Database "+dbname+" doesn't exists !");
+    }
     },
 
     /**
-    * This function check for database exists
-    * @namespace Storage
-    * @param {String} dbname
-    * return {bool}
-    */
+     * This function check for database exists
+     * @namespace Storage
+     * @param {String} dbname
+     * return {bool}
+     */
     existsDb: function (dbname) {
-    	return this.storage.getItem(dbname) ? true : false;
+    return this.storage.getItem(dbname) ? true : false;
     },
 
     /**
-    * This function remove a database
-    * @namespace Storage
-    * @param {String} dbname
-    * return Storage
-    */
+     * This function remove a database
+     * @namespace Storage
+     * @param {String} dbname
+     * return Storage
+     */
     removeDb: function (dbname) {
-    	var founded = this.storage.getItem(dbname);
+    var founded = this.storage.getItem(dbname);
 
-    	if (founded) {
-	        this.storage.removeItem(dbname);
-	        this.db = null;
-	        this.selected = null;
-	        return this;
-	    }
-	    else {
-	    	console.error("Database "+dbname+" doesn't exists !");
-	    }
+    if (founded) {
+        this.storage.removeItem(dbname);
+        this.db = null;
+        this.selected = null;
+        return this;
+    }
+    else {
+        console.error("Database "+dbname+" doesn't exists !");
+    }
     },
 
     /**
-    * This function save a database
-    * @namespace Storage
-    * return Storage
-    */
+     * This function save a database
+     * @namespace Storage
+     * return Storage
+     */
     saveDb: function () {
         if (this.selected) {
             if (this.storage.getItem(this.selected)) {
@@ -135,12 +135,12 @@ var _Storage = {
     },
 
     /**
-    * This function add a table to database
-    * @namespace Storage
-    * @param {String} tablename
-    * @param {Array} columns
-    * return Storage
-    */
+     * This function add a table to database
+     * @namespace Storage
+     * @param {String} tablename
+     * @param {Array} columns
+     * return Storage
+     */
     addTable: function (tablename, columns) {
         if (this.dbSelected()) {
             if (!this.existsTable()) {
@@ -162,11 +162,11 @@ var _Storage = {
     },
 
     /**
-    * This function verify if table exists
-    * @namespace Storage
-    * @param {String} tablename
-    * return {bool}
-    */
+     * This function verify if table exists
+     * @namespace Storage
+     * @param {String} tablename
+     * return {bool}
+     */
     existsTable: function (tablename) {
         this.checkDbSelected();
 
@@ -174,29 +174,29 @@ var _Storage = {
     },
 
     /**
-    * This function list tables
-    * @namespace Storage
-    * return {Array}
-    */
+     * This function list tables
+     * @namespace Storage
+     * return {Array}
+     */
     listTable: function () {
         this.checkDbSelected();
 
         var tables = [];
         for (var table in this.db.tables) {
-        	if (this.db.tables[table] != null) {
-            	tables.push(table);
-        	}
+        if (this.db.tables[table] != null) {
+            tables.push(table);
+        }
         }
 
         return tables;
     },
 
     /**
-    * This function select a table
-    * @namespace Storage
-    * @param {String} tablename
-    * return Storage
-    */
+     * This function select a table
+     * @namespace Storage
+     * @param {String} tablename
+     * return Storage
+     */
     selectTable: function (tablename) {
         if (this.existsTable(tablename)) {
             this.selectedTable = tablename;
@@ -208,11 +208,11 @@ var _Storage = {
     },
 
     /**
-    * This function remove a table
-    * @namespace Storage
-    * @param {String} tablename
-    * return Storage
-    */
+     * This function remove a table
+     * @namespace Storage
+     * @param {String} tablename
+     * return Storage
+     */
     removeTable: function (tablename) {
         if (this.existsTable(tablename)) {
             this.db.tables[tablename] = null;
@@ -228,20 +228,20 @@ var _Storage = {
     },
 
     getTableHead: function () {
-    	this.checkTableSelected();
+    this.checkTableSelected();
 
-    	return this.db.tables[this.selectedTable].header;
+    return this.db.tables[this.selectedTable].header;
     },
 
     /**
-    * This function add a line to a table
-    * @namespace Storage
-    * @param {Object} line
-    * return {Int} id, last insert id
-    */
+     * This function add a line to a table
+     * @namespace Storage
+     * @param {Object} line
+     * return {Int} id, last insert id
+     */
     addLine: function (line, addnull) {
         if (this.checkColumnMatch(line)) {
-        	return false;
+        return false;
         }
 
         this.db.tables[this.selectedTable].header.forEach(function(head) {
@@ -261,12 +261,14 @@ var _Storage = {
     },
 
     /**
-    * This method to get a line from selected table
-    * @param {Int} id
-    * return {Object || false} line
-    */
+     * This method to get a line from selected table
+     * @param {Int} id
+     * return {Object || false} line
+     */
     getLine: function (id) {
         this.checkTableSelected();
+
+        var row = null;
 
         if (row = this.db.tables[this.selectedTable].rows[id-1]) {
             this.getted = row;
@@ -279,11 +281,11 @@ var _Storage = {
     },
 
     /**
-    * This method to get a list of line from selected table
-    * @param {int} limitBegin
-    * @param {int} limitEnd
-    * return {Array} lines
-    */
+     * This method to get a list of line from selected table
+     * @param {int} limitBegin
+     * @param {int} limitEnd
+     * return {Array} lines
+     */
     getLines: function (limitBegin, limitEnd) {
         this.checkTableSelected();
 
@@ -297,43 +299,43 @@ var _Storage = {
     },
 
     /**
-    * This method to limit number of lines to return
-    * @param {Array} lines
-    * @param {Int} begin
-    * @param {Int} end
-    * return {Array} lines
-    */
+     * This method to limit number of lines to return
+     * @param {Array} lines
+     * @param {Int} begin
+     * @param {Int} end
+     * return {Array} lines
+     */
     limitLines: function (lines, begin, end) {
         return end ? lines.slice(begin, end+1) : lines.slice(begin);
     },
 
     /**
-    * This method to get a reverted list from selected table
-    * @param {Int} begin
-    * @param {Int} end
-    * return {Array} lines
-    */
+     * This method to get a reverted list from selected table
+     * @param {Int} begin
+     * @param {Int} end
+     * return {Array} lines
+     */
     getReversedLines: function (begin, end) {
         return this.limitLines(this.getLines().reverse(), begin, end);
     },
 
     /**
-    * This method to get lines length from selected table
-    * @param {Int} id
-    * return {Object || false} line
-    */
+     * This method to get lines length from selected table
+     * @param {Int} id
+     * return {Object || false} line
+     */
     countLines: function () {
-    	this.checkTableSelected();
+    this.checkTableSelected();
 
-    	return this.db.tables[this.selectedTable].rows.length;
+    return this.db.tables[this.selectedTable].rows.length;
     },
 
     /**
-    * This method to remove a line from selected table
-    * id correspond to row position in the rows array so when user call id=x do id-1 to get the right position
-    * @param {Int} id
-    * return {Storage || false}
-    */
+     * This method to remove a line from selected table
+     * id correspond to row position in the rows array so when user call id=x do id-1 to get the right position
+     * @param {Int} id
+     * return {Storage || false}
+     */
     removeLine: function (id) {
         this.checkTableSelected();
 
@@ -351,9 +353,9 @@ var _Storage = {
     },
 
     /**
-    * This method to empty a selected table
-    * return {Storage || false}
-    */
+     * This method to empty a selected table
+     * return {Storage || false}
+     */
     removeAllLines: function () {
         this.checkTableSelected();
 
@@ -364,12 +366,12 @@ var _Storage = {
     },
 
     /**
-    * This method to update a line from selected table
-    * id correspond to row position in the rows array so when user call id=x do id-1 to get the right position
-    * @param {Int} id
-    * @param {object} values
-    * return {Storage || false}
-    */
+     * This method to update a line from selected table
+     * id correspond to row position in the rows array so when user call id=x do id-1 to get the right position
+     * @param {Int} id
+     * @param {object} values
+     * return {Storage || false}
+     */
     updateLine: function(id,values) {
         this.checkTableSelected();
 
