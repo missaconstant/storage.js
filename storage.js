@@ -1,4 +1,6 @@
 /**
+* @author Atomix dev team
+*
 * This namespace to easly manage localstorage
 * @namespace Storage
 */
