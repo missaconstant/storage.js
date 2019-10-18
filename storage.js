@@ -31,8 +31,8 @@ var _Storage = {
     initDb: function (options, callback, fail) {
     if (options && options.name && !this.existsDb(options.name)) {
         var newDb = {
-        dbinfos: {name: options.name},
-        tables: options.tables ? options.tables : {}
+            dbinfos: {name: options.name},
+            tables: options.tables ? options.tables : {}
         };
 
         this.storage.setItem(options.name, JSON.stringify(newDb));
@@ -44,7 +44,7 @@ var _Storage = {
     }
     else if(this.existsDb(options.name)){
         /* select the db */
-            this.selectDb(options.name);
+        this.selectDb(options.name);
 
         if (callback) callback();
         console.log("Database "+options.name+" inited !");
@@ -73,19 +73,19 @@ var _Storage = {
      * return Storage
      */
     selectDb: function (dbname) {
-    /* initialisation if needed */
-    // this.initDb(this.inittial);
+        /* initialisation if needed */
+        // this.initDb(this.inittial);
 
-    var founded = this.storage.getItem(dbname);
+        var founded = this.storage.getItem(dbname);
 
-    if (founded) {
-        this.db = JSON.parse(founded);
-        this.selected = dbname;
-        return this;
-    }
-    else {
-        console.error("Database "+dbname+" doesn't exists !");
-    }
+        if (founded) {
+            this.db = JSON.parse(founded);
+            this.selected = dbname;
+            return this;
+        }
+        else {
+            console.error("Database "+dbname+" doesn't exists !");
+        }
     },
 
     /**
@@ -95,7 +95,7 @@ var _Storage = {
      * return {bool}
      */
     existsDb: function (dbname) {
-    return this.storage.getItem(dbname) ? true : false;
+        return this.storage.getItem(dbname) ? true : false;
     },
 
     /**
@@ -105,17 +105,17 @@ var _Storage = {
      * return Storage
      */
     removeDb: function (dbname) {
-    var founded = this.storage.getItem(dbname);
+        var founded = this.storage.getItem(dbname);
 
-    if (founded) {
-        this.storage.removeItem(dbname);
-        this.db = null;
-        this.selected = null;
-        return this;
-    }
-    else {
-        console.error("Database "+dbname+" doesn't exists !");
-    }
+        if (founded) {
+            this.storage.removeItem(dbname);
+            this.db = null;
+            this.selected = null;
+            return this;
+        }
+        else {
+            console.error("Database "+dbname+" doesn't exists !");
+        }
     },
 
     /**
@@ -185,9 +185,9 @@ var _Storage = {
 
         var tables = [];
         for (var table in this.db.tables) {
-        if (this.db.tables[table] != null) {
-            tables.push(table);
-        }
+            if (this.db.tables[table] != null) {
+                tables.push(table);
+            }
         }
 
         return tables;
@@ -230,9 +230,9 @@ var _Storage = {
     },
 
     getTableHead: function () {
-    this.checkTableSelected();
+        this.checkTableSelected();
 
-    return this.db.tables[this.selectedTable].header;
+        return this.db.tables[this.selectedTable].header;
     },
 
     /**
@@ -243,7 +243,7 @@ var _Storage = {
      */
     addLine: function (line, addnull) {
         if (this.checkColumnMatch(line)) {
-        return false;
+            return false;
         }
 
         this.db.tables[this.selectedTable].header.forEach(function(head) {
@@ -327,9 +327,9 @@ var _Storage = {
      * return {Object || false} line
      */
     countLines: function () {
-    this.checkTableSelected();
+        this.checkTableSelected();
 
-    return this.db.tables[this.selectedTable].rows.length;
+        return this.db.tables[this.selectedTable].rows.length;
     },
 
     /**
