@@ -29,28 +29,28 @@ var _Storage = {
      * @return Storage
      */
     initDb: function (options, callback, fail) {
-    if (options && options.name && !this.existsDb(options.name)) {
-        var newDb = {
-            dbinfos: {name: options.name},
-            tables: options.tables ? options.tables : {}
-        };
+        if (options && options.name && !this.existsDb(options.name)) {
+            var newDb = {
+                dbinfos: {name: options.name},
+                tables: options.tables ? options.tables : {}
+            };
 
-        this.storage.setItem(options.name, JSON.stringify(newDb));
-        /* select the db */
-        this.selectDb(options.name);
+            this.storage.setItem(options.name, JSON.stringify(newDb));
+            /* select the db */
+            this.selectDb(options.name);
 
-        if (callback) callback();
-        console.log("Database "+options.name+"setted correctly !");
-    }
-    else if(this.existsDb(options.name)){
-        /* select the db */
-        this.selectDb(options.name);
+            if (callback) callback();
+            console.log("Database "+options.name+"setted correctly !");
+        }
+        else if(this.existsDb(options.name)){
+            /* select the db */
+            this.selectDb(options.name);
 
-        if (callback) callback();
-        console.log("Database "+options.name+" inited !");
-    }
-    else {
-        if (fail) fail();
+            if (callback) callback();
+            console.log("Database "+options.name+" inited !");
+        }
+        else {
+            if (fail) fail();
             console.error('Cannot initiate this database.');
         }
     },
@@ -251,11 +251,14 @@ var _Storage = {
                 line[head] = addnull ? null : '';
             }
         });
+
         /* adding id */
         var id = this.db.tables[this.selectedTable].rows.length + 1;
         line['id'] = id;
+
         /**/
         this.db.tables[this.selectedTable].rows.push(line);
+
         /**/
         this.saveDb();
 
@@ -270,9 +273,9 @@ var _Storage = {
     getLine: function (id) {
         this.checkTableSelected();
 
-        var row = null;
+        var row = this.db.tables[this.selectedTable].rows[id-1] || null;
 
-        if (row = this.db.tables[this.selectedTable].rows[id-1]) {
+        if ( row ) {
             this.getted = row;
             return row;
         }
@@ -394,9 +397,15 @@ var _Storage = {
     },
 
     where: function (x, sign, y) {
+        // hack for "y is never used"
+        y;
+
         if (this.getted) {
             this.getted = this.getted.filter(function (one) {
-                return eval("one[x.toString()]"+sign+"y.toString()");
+                // hack for "one is never used"
+                one;
+
+                return eval("one[x.toString()]" + (sign == '=' ? '==' : sign) + "y.toString()");
             });
 
             return this.getted;
